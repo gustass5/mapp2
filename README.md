@@ -1,2 +1,3 @@
 # mapp2
-Second iteration of Mapp
+
+Second version of Mapp.
