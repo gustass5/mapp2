@@ -1,3 +1,3 @@
-# mapp2
+# Mapp 2
 
 Second version of Mapp.
