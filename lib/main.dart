@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mapp',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        brightness: Brightness.dark,
+        primaryColor: Colors.pink,
       ),
       home: HomePage(),
     );
