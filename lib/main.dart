@@ -66,6 +66,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+      body: NotebookPage(),
       bottomNavigationBar: BottomNavigation(),
     );
   }
@@ -104,6 +105,58 @@ class _BottomNavigationState extends State<BottomNavigation> {
         BottomNavigationBarItem(
           icon: new Icon(Icons.list),
           label: "List",
+        ),
+      ],
+    );
+  }
+}
+
+class NotebookPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Note(),
+        Note(headline: "Headline"),
+        Note(headline: "Test text"),
+      ],
+    );
+  }
+}
+
+class Note extends StatefulWidget {
+  final String headline;
+  final String text =
+      'Test text Test text Test text Test text Test text Test text Test text Test text Test text Test text Test text Test text';
+
+  Note({Key key, this.headline = 'Test'}) : super(key: key);
+
+  @override
+  _NoteState createState() => _NoteState();
+}
+
+class _NoteState extends State<Note> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Card(
+          child: ExpansionTile(
+            title: Text(
+              widget.headline,
+            ),
+            backgroundColor: Colors.grey[900],
+            collapsedBackgroundColor: Colors.grey[900],
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                title: Text(
+                  widget.text,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
