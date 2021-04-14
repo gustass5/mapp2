@@ -1,13 +1,14 @@
 // Widget that contains the AdaptiveNavigationScaffold
 import 'package:flutter/material.dart';
-import './notes_state.dart';
-import './inner_router_delegate.dart';
+import '../../router/router_state.dart';
+import '../../router/content_router/content_router_delegate.dart';
+import './widgets/bottom_navigation.dart';
 
 class AppShell extends StatefulWidget {
-  final NotesState appState;
+  final RouterState routerState;
 
   AppShell({
-    @required this.appState,
+    @required this.routerState,
   });
 
   @override
@@ -15,18 +16,18 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  InnerRouterDelegate _routerDelegate;
+  ContentRouterDelegate _routerDelegate;
   ChildBackButtonDispatcher _backButtonDispatcher;
 
   void initState() {
     super.initState();
-    _routerDelegate = InnerRouterDelegate(widget.appState);
+    _routerDelegate = ContentRouterDelegate(widget.routerState);
   }
 
   @override
   void didUpdateWidget(covariant AppShell oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _routerDelegate.appState = widget.appState;
+    _routerDelegate.routerState = widget.routerState;
   }
 
   @override
@@ -40,28 +41,21 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    var appState = widget.appState;
+    var routerState = widget.routerState;
 
     // Claim priority, If there are parallel sub router, you will need
     // to pick which one should take priority;
     _backButtonDispatcher.takePriority();
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Mapp'),
+      ),
       body: Router(
         routerDelegate: _routerDelegate,
         backButtonDispatcher: _backButtonDispatcher,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
-        ],
-        currentIndex: appState.selectedIndex,
-        onTap: (newIndex) {
-          appState.selectedIndex = newIndex;
-        },
-      ),
+      bottomNavigationBar: BottomNavigation(routerState: routerState),
     );
   }
 }

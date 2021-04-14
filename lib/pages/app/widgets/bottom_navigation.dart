@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
+import '../../../router/router_state.dart';
 
-class BottomNavigation extends StatefulWidget {
-  @override
-  _BottomNavigationState createState() => _BottomNavigationState();
-}
-
-class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedIndex = 1;
-
-  void _onNavigationItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+class BottomNavigation extends StatelessWidget {
+  final RouterState routerState;
+  BottomNavigation({
+    @required this.routerState,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onNavigationItemTapped,
+      currentIndex: routerState.navigationIndex,
+      onTap: (newIndex) {
+        routerState.navigationIndex = newIndex;
+      },
       backgroundColor: Colors.grey[900],
       selectedItemColor: Colors.pink,
       items: [
@@ -31,8 +26,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
           label: "Notebook",
         ),
         BottomNavigationBarItem(
-          icon: new Icon(Icons.list),
-          label: "List",
+          icon: new Icon(Icons.settings),
+          label: "Settings",
         ),
       ],
     );

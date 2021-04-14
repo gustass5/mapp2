@@ -11,9 +11,9 @@ class NotebookPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mapp'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Mapp'),
+      // ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

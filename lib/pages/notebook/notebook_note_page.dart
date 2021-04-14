@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import "note.dart";
+import 'note.dart';
 
-class SingleNoteScreen extends StatelessWidget {
+class NotebookNotePage extends StatelessWidget {
   final Note note;
 
-  SingleNoteScreen({
-    @required this.note,
-  });
+  NotebookNotePage({
+    this.note,
+  }) : super(key: ValueKey(note));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

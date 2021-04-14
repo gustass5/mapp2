@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './pages/notebook/note_router_delegate.dart';
-import './pages/notebook/route_information_parser.dart';
+import './router/navigation_router/note_router_delegate.dart';
+import './router/navigation_router/route_information_parser.dart';
 
 void main() {
   runApp(Root());
@@ -12,9 +12,9 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  NoteRouterDelegate _routerDelegate = NoteRouterDelegate();
-  NoteRouteInformationParser _routeInformationParser =
-      NoteRouteInformationParser();
+  AppRouterDelegate _routerDelegate = AppRouterDelegate();
+  AppRouteInformationParser _routeInformationParser =
+      AppRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {

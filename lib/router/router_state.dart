@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import './note.dart';
+import '../pages/notebook/note.dart';
 
-class NotesState extends ChangeNotifier {
-  int _selectedIndex;
+class RouterState extends ChangeNotifier {
+  int _navigationIndex;
 
   Note _selectedNote;
 
@@ -12,13 +12,13 @@ class NotesState extends ChangeNotifier {
     Note("Test3", "Content3", "2021-02-14"),
   ];
 
-  NotesState() : _selectedIndex = 0;
+  RouterState() : _navigationIndex = 0;
 
-  int get selectedIndex => _selectedIndex;
+  int get navigationIndex => _navigationIndex;
 
-  set selectedIndex(int idx) {
-    _selectedIndex = idx;
-    if (_selectedIndex == 1) {
+  set navigationIndex(int idx) {
+    _navigationIndex = idx;
+    if (_navigationIndex == 1) {
       // Remove this line if you want to keep the selected book when navigating
       // between "settings" and "home" which book was selected when Settings is
       // tapped.
@@ -34,12 +34,12 @@ class NotesState extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getSelectedBookById() {
+  int getSelectedNoteById() {
     if (!notes.contains(_selectedNote)) return 0;
     return notes.indexOf(_selectedNote);
   }
 
-  void setSelectedBookById(int id) {
+  void setSelectedNoteById(int id) {
     if (id < 0 || id > notes.length - 1) {
       return;
     }

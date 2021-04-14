@@ -1,28 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import './notes_state.dart';
-import './note_route_path.dart';
-import './notebook_page.dart';
-import './single_note_screen.dart';
-import './note.dart';
+import '../router_state.dart';
+import '../route_path.dart';
+import '../../pages/notebook/notebook_page.dart';
+import '../../pages/notebook/notebook_note_page.dart';
+import '../../pages/notebook/note.dart';
 
-class InnerRouterDelegate extends RouterDelegate<NoteRoutePath>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<NoteRoutePath> {
+class ContentRouterDelegate extends RouterDelegate<RoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  NotesState get appState => _appState;
-  NotesState _appState;
-  set appState(NotesState value) {
-    if (value == _appState) {
+  RouterState get routerState => _routerState;
+  RouterState _routerState;
+  set routerState(RouterState value) {
+    if (value == _routerState) {
       return;
     }
-    _appState = value;
+    _routerState = value;
     notifyListeners();
   }
 
-  InnerRouterDelegate(this._appState);
+  ContentRouterDelegate(this._routerState);
 
   void _handleNoteTapped(Note note) {
-    appState.selectedNote = note;
+    routerState.selectedNote = note;
     notifyListeners();
   }
 
@@ -31,18 +31,23 @@ class InnerRouterDelegate extends RouterDelegate<NoteRoutePath>
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (appState.selectedIndex == 0) ...[
+        if (routerState.navigationIndex == 0)
+          FadeAnimationPage(
+            // child: Home(),
+            key: ValueKey("HomePage"),
+          )
+        else if (routerState.navigationIndex == 1) ...[
           FadeAnimationPage(
             key: ValueKey('NotebookPage'),
             child: NotebookPage(
-              notes: appState.notes,
+              notes: routerState.notes,
               onTapped: _handleNoteTapped,
             ),
           ),
-          if (appState.selectedNote != null)
+          if (routerState.selectedNote != null)
             MaterialPage(
-              key: ValueKey(appState.selectedNote),
-              child: SingleNoteScreen(note: appState.selectedNote),
+              key: ValueKey(routerState.selectedNote),
+              child: NotebookNotePage(note: routerState.selectedNote),
             ),
         ] else
           FadeAnimationPage(
@@ -51,7 +56,7 @@ class InnerRouterDelegate extends RouterDelegate<NoteRoutePath>
           ),
       ],
       onPopPage: (route, result) {
-        appState.selectedNote = null;
+        routerState.selectedNote = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -59,7 +64,7 @@ class InnerRouterDelegate extends RouterDelegate<NoteRoutePath>
   }
 
   @override
-  Future<void> setNewRoutePath(NoteRoutePath path) async {
+  Future<void> setNewRoutePath(RoutePath path) async {
     // This is not required for inner router delegate because it does not
     // parse route ???
     assert(false);
