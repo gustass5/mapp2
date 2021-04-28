@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import '../pages/notebook/note.dart';
 
 class RouterState extends ChangeNotifier {
   int _navigationIndex;
 
-  Note _selectedNote;
-
-  List<Note> notes = [
-    Note("Test", "Content", "2021-02-12"),
-    Note("Test2", "Content2", "2021-02-13"),
-    Note("Test3", "Content3", "2021-02-14"),
-  ];
+  int _selectedNoteIndex;
 
   RouterState() : _navigationIndex = 0;
 
@@ -22,29 +15,15 @@ class RouterState extends ChangeNotifier {
       // Remove this line if you want to keep the selected book when navigating
       // between "settings" and "home" which book was selected when Settings is
       // tapped.
-      _selectedNote = null;
+      _selectedNoteIndex = null;
     }
     notifyListeners();
   }
 
-  Note get selectedNote => _selectedNote;
+  int get selectedNoteIndex => _selectedNoteIndex;
 
-  set selectedNote(Note book) {
-    _selectedNote = book;
-    notifyListeners();
-  }
-
-  int getSelectedNoteById() {
-    if (!notes.contains(_selectedNote)) return 0;
-    return notes.indexOf(_selectedNote);
-  }
-
-  void setSelectedNoteById(int id) {
-    if (id < 0 || id > notes.length - 1) {
-      return;
-    }
-
-    _selectedNote = notes[id];
+  set selectedNoteIndex(int index) {
+    _selectedNoteIndex = index;
     notifyListeners();
   }
 }
