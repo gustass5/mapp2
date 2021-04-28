@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './notebook_state.dart';
 import './note.dart';
+import '../../router/router_state.dart';
 
 class NotebookPage extends StatelessWidget {
+  final RouterState routerState;
   final List<Note> notes;
-  final ValueChanged<Note> onTapped;
+  final ValueChanged<int> onTapped;
   NotebookPage({
+    @required this.routerState,
     @required this.notes,
     @required this.onTapped,
   });
   @override
   Widget build(BuildContext context) {
+    var notebookState = context.watch<NotebookState>();
     return Scaffold(
       // appBar: AppBar(
       //   title: Text('Mapp'),
@@ -17,13 +23,13 @@ class NotebookPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          for (var note in notes)
+          for (var note in notebookState.notes)
             Column(
               children: [
                 Card(
                   child: ExpansionTile(
                     title: GestureDetector(
-                      onTap: () => onTapped(note),
+                      onTap: () => onTapped(notes.indexOf(note)),
                       child: Text(
                         note.headline,
                       ),
@@ -44,6 +50,14 @@ class NotebookPage extends StatelessWidget {
               ],
             )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          int index = notebookState.createNote();
+          routerState.selectedNoteIndex = index;
+        },
+        child: new Icon(Icons.add),
+        backgroundColor: Colors.pink[500],
       ),
     );
   }

@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../router_state.dart';
 import '../route_path.dart';
 import '../../pages/notebook/notebook_page.dart';
 import '../../pages/notebook/notebook_note_page.dart';
-import '../../pages/notebook/note.dart';
+import '../../pages/notebook/notebook_state.dart';
 
 class ContentRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
@@ -21,13 +22,14 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
 
   ContentRouterDelegate(this._routerState);
 
-  void _handleNoteTapped(Note note) {
-    routerState.selectedNote = note;
+  void _handleNoteTapped(int index) {
+    routerState.selectedNoteIndex = index;
     notifyListeners();
   }
 
   @override
   Widget build(BuildContext context) {
+    var notebookState = context.watch<NotebookState>();
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -40,14 +42,15 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
           FadeAnimationPage(
             key: ValueKey('NotebookPage'),
             child: NotebookPage(
-              notes: routerState.notes,
+              routerState: routerState,
+              notes: notebookState.notes,
               onTapped: _handleNoteTapped,
             ),
           ),
-          if (routerState.selectedNote != null)
+          if (routerState.selectedNoteIndex != null)
             MaterialPage(
-              key: ValueKey(routerState.selectedNote),
-              child: NotebookNotePage(note: routerState.selectedNote),
+              key: ValueKey(routerState.selectedNoteIndex),
+              child: NotebookNotePage(noteIndex: routerState.selectedNoteIndex),
             ),
         ] else
           FadeAnimationPage(
@@ -56,7 +59,7 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
           ),
       ],
       onPopPage: (route, result) {
-        routerState.selectedNote = null;
+        routerState.selectedNoteIndex = null;
         notifyListeners();
         return route.didPop(result);
       },

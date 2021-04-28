@@ -20,10 +20,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       return SettingsPath();
     } else {
       // Handle Notebook notes
-      if (routerState.selectedNote == null) {
+      if (routerState.selectedNoteIndex == null) {
         return NotebookPath();
       } else {
-        return NotebookNotePath(routerState.getSelectedNoteById());
+        return NotebookNotePath(routerState.selectedNoteIndex);
       }
     }
   }
@@ -43,8 +43,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
           return false;
         }
 
-        if (routerState.selectedNote != null) {
-          routerState.selectedNote = null;
+        if (routerState.selectedNoteIndex != null) {
+          routerState.selectedNoteIndex = null;
         }
         notifyListeners();
         return true;
@@ -62,10 +62,10 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     } else if (path is SettingsPath) {
       routerState.navigationIndex = 2;
     } else if (path is NotebookPath) {
-      routerState.selectedNote = null;
+      routerState.selectedNoteIndex = null;
       routerState.navigationIndex = 1;
     } else if (path is NotebookNotePath) {
-      routerState.setSelectedNoteById(path.id);
+      routerState.selectedNoteIndex = path.id;
     }
   }
 }
