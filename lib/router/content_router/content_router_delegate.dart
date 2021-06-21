@@ -1,8 +1,10 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../router_state.dart';
 import '../route_path.dart';
+import '../../pages/login/login_page.dart';
 import '../../pages/notebook/notebook_page.dart';
 import '../../pages/notebook/notebook_note_page.dart';
 import '../../pages/notebook/notebook_state.dart';
@@ -10,14 +12,27 @@ import '../../pages/notebook/notebook_state.dart';
 class ContentRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  RouterState get routerState => _routerState;
   RouterState _routerState;
+  FlutterSecureStorage _storage;
+
+  RouterState get routerState => _routerState;
+
   set routerState(RouterState value) {
     if (value == _routerState) {
       return;
     }
     _routerState = value;
     notifyListeners();
+  }
+
+  FlutterSecureStorage get storage => _storage;
+
+  set storage(FlutterSecureStorage value) {
+    if (value == _storage) {
+      return;
+    }
+    _storage = value;
+    // notifyListeners();
   }
 
   ContentRouterDelegate(this._routerState);
@@ -33,7 +48,12 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (routerState.navigationIndex == 0)
+        if (routerState.navigationIndex == null)
+          FadeAnimationPage(
+            key: ValueKey('LoginPage'),
+            child: LoginPage(routerState: routerState, storage: storage),
+          )
+        else if (routerState.navigationIndex == 0)
           FadeAnimationPage(
             // child: Home(),
             key: ValueKey("HomePage"),
@@ -43,6 +63,7 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
             key: ValueKey('NotebookPage'),
             child: NotebookPage(
               routerState: routerState,
+              storage: storage,
               notes: notebookState.notes,
               onTapped: _handleNoteTapped,
             ),
@@ -50,7 +71,10 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
           if (routerState.selectedNoteIndex != null)
             MaterialPage(
               key: ValueKey(routerState.selectedNoteIndex),
-              child: NotebookNotePage(noteIndex: routerState.selectedNoteIndex),
+              child: NotebookNotePage(
+                  routerState: routerState,
+                  storage: storage,
+                  noteIndex: routerState.selectedNoteIndex),
             ),
         ] else
           FadeAnimationPage(

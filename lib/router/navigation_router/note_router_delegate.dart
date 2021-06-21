@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import '../route_path.dart';
 import '../router_state.dart';
 import '../../pages/app/app_shell.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AppRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
+
+  final storage = new FlutterSecureStorage();
 
   RouterState routerState = RouterState();
 
@@ -14,17 +17,21 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   }
 
   RoutePath get currentConfiguration {
+    if (routerState.navigationIndex == null) {
+      return LoginPath();
+    }
+
     if (routerState.navigationIndex == 0) {
       return HomePath();
-    } else if (routerState.navigationIndex == 2) {
-      return SettingsPath();
-    } else {
+    } else if (routerState.navigationIndex == 1) {
       // Handle Notebook notes
       if (routerState.selectedNoteIndex == null) {
         return NotebookPath();
       } else {
         return NotebookNotePath(routerState.selectedNoteIndex);
       }
+    } else {
+      return SettingsPath();
     }
   }
 
@@ -35,7 +42,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       pages: [
         MaterialPage(
           key: ValueKey('NotebookPage'),
-          child: AppShell(routerState: routerState),
+          child: AppShell(routerState: routerState, storage: storage),
         ),
       ],
       onPopPage: (route, result) {
@@ -57,7 +64,9 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
 
   @override
   Future<void> setNewRoutePath(RoutePath path) async {
-    if (path is HomePath) {
+    if (path is LoginPath) {
+      routerState.navigationIndex = null;
+    } else if (path is HomePath) {
       routerState.navigationIndex = 0;
     } else if (path is SettingsPath) {
       routerState.navigationIndex = 2;

@@ -1,5 +1,7 @@
 abstract class RoutePath {}
 
+class LoginPath extends RoutePath {}
+
 class HomePath extends RoutePath {}
 
 class SettingsPath extends RoutePath {}

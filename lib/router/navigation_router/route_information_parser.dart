@@ -25,6 +25,9 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
 
   @override
   RouteInformation restoreRouteInformation(RoutePath configuration) {
+    if (configuration is LoginPath) {
+      return RouteInformation(location: '/login');
+    }
     if (configuration is HomePath) {
       return RouteInformation(location: '/home');
     }
