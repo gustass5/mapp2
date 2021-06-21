@@ -135,7 +135,7 @@ class NotebookNotePage extends StatelessWidget {
                         onPressed: () async {
                           await deleteNote();
                           Navigator.pop(context);
-                          routerState.navigationIndex = 2;
+                          routerState.navigationIndex = 1;
                         },
                         child: const Text('Confirm'),
                       ),
