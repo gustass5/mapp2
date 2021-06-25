@@ -11,8 +11,8 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
     if (uri.pathSegments.isNotEmpty && uri.pathSegments.first == 'home') {
       return HomePath();
     } else if (uri.pathSegments.isNotEmpty &&
-        uri.pathSegments.first == 'settings') {
-      return SettingsPath();
+        uri.pathSegments.first == 'github') {
+      return GithubPath();
     } else {
       if (uri.pathSegments.length >= 2) {
         if (uri.pathSegments[0] == 'notebook') {
@@ -31,8 +31,8 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
     if (configuration is HomePath) {
       return RouteInformation(location: '/home');
     }
-    if (configuration is SettingsPath) {
-      return RouteInformation(location: '/settings');
+    if (configuration is GithubPath) {
+      return RouteInformation(location: '/github');
     }
     if (configuration is NotebookPath) {
       return RouteInformation(location: '/notebook');
