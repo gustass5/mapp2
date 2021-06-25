@@ -5,6 +5,8 @@ class RouterState extends ChangeNotifier {
 
   int _selectedNoteIndex;
 
+  String _selectedRepository;
+
   RouterState() : _navigationIndex = 0;
 
   int get navigationIndex => _navigationIndex;
@@ -12,10 +14,8 @@ class RouterState extends ChangeNotifier {
   set navigationIndex(int idx) {
     _navigationIndex = idx;
     if (_navigationIndex == 1) {
-      // Remove this line if you want to keep the selected book when navigating
-      // between "settings" and "home" which book was selected when Settings is
-      // tapped.
       _selectedNoteIndex = null;
+      _selectedRepository = null;
     }
     notifyListeners();
   }
@@ -24,6 +24,13 @@ class RouterState extends ChangeNotifier {
 
   set selectedNoteIndex(int index) {
     _selectedNoteIndex = index;
+    notifyListeners();
+  }
+
+  String get selectedRepository => _selectedRepository;
+
+  set selectedRepository(String name) {
+    _selectedRepository = name;
     notifyListeners();
   }
 }

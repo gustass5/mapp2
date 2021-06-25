@@ -1,5 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mapp2/pages/github/github_page.dart';
+import 'package:mapp2/pages/github/pull_requests_page.dart';
+import 'package:mapp2/pages/home/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../router_state.dart';
@@ -42,9 +45,13 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
     notifyListeners();
   }
 
+  void _handleRepositoryTapped(String name) {
+    routerState.selectedRepository = name;
+    notifyListeners();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var notebookState = context.watch<NotebookState>();
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -55,7 +62,7 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
           )
         else if (routerState.navigationIndex == 0)
           FadeAnimationPage(
-            // child: Home(),
+            child: HomePage(),
             key: ValueKey("HomePage"),
           )
         else if (routerState.navigationIndex == 1) ...[
@@ -64,7 +71,6 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
             child: NotebookPage(
               routerState: routerState,
               storage: storage,
-              notes: notebookState.notes,
               onTapped: _handleNoteTapped,
             ),
           ),
@@ -76,11 +82,24 @@ class ContentRouterDelegate extends RouterDelegate<RoutePath>
                   storage: storage,
                   noteIndex: routerState.selectedNoteIndex),
             ),
-        ] else
+        ] else if (routerState.navigationIndex == 2) ...[
           FadeAnimationPage(
-            // child: SettingsScreen(),
-            key: ValueKey("SettingsPage"),
+            child: GithubPage(
+              routerState: routerState,
+              storage: storage,
+              onTapped: _handleRepositoryTapped,
+            ),
+            key: ValueKey("GithubPage"),
           ),
+          if (routerState.selectedRepository != null)
+            MaterialPage(
+              key: ValueKey(routerState.selectedNoteIndex),
+              child: PullRequestsPage(
+                  routerState: routerState,
+                  storage: storage,
+                  repositoryName: routerState.selectedRepository),
+            ),
+        ]
       ],
       onPopPage: (route, result) {
         routerState.selectedNoteIndex = null;

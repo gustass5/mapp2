@@ -26,8 +26,8 @@ class BottomNavigation extends StatelessWidget {
           label: "Notebook",
         ),
         BottomNavigationBarItem(
-          icon: new Icon(Icons.settings),
-          label: "Settings",
+          icon: new Icon(Icons.code),
+          label: "Github",
         ),
       ],
     );

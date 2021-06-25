@@ -4,7 +4,7 @@ class LoginPath extends RoutePath {}
 
 class HomePath extends RoutePath {}
 
-class SettingsPath extends RoutePath {}
+class GithubPath extends RoutePath {}
 
 class NotebookPath extends RoutePath {}
 

@@ -9,12 +9,10 @@ import 'dart:convert';
 class NotebookPage extends StatelessWidget {
   final RouterState routerState;
   final FlutterSecureStorage storage;
-  final List<Note> notes;
   final ValueChanged<int> onTapped;
   NotebookPage({
     @required this.routerState,
     @required this.storage,
-    @required this.notes,
     @required this.onTapped,
   });
 

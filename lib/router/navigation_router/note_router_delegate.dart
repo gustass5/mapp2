@@ -31,7 +31,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         return NotebookNotePath(routerState.selectedNoteIndex);
       }
     } else {
-      return SettingsPath();
+      return GithubPath();
     }
   }
 
@@ -68,7 +68,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       routerState.navigationIndex = null;
     } else if (path is HomePath) {
       routerState.navigationIndex = 0;
-    } else if (path is SettingsPath) {
+    } else if (path is GithubPath) {
       routerState.navigationIndex = 2;
     } else if (path is NotebookPath) {
       routerState.selectedNoteIndex = null;
