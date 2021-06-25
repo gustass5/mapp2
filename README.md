@@ -1,3 +1,7 @@
-# Mapp 2
+# Mapp2
 
-Second version of Mapp.
+### Frontend part of Mapp2 application
+
+You run this like every other flutter application on your phone or emulator
+
+https://flutter.dev/docs/get-started/install
